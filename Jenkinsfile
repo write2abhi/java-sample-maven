@@ -27,17 +27,22 @@ pipeline {
                 '''
             }
         }   
-        stage('Unit Test') {
+       // stage('Unit Test') {
+       //     steps {
+       //         sh 'mvn test'
+       //     }
+       //   }
+       // stage('Integration Test') {
+       //     steps {
+       //         sh 'mvn clean install'
+       //     }
+       //   }
+        stage('Build') {
             steps {
-                sh 'mvn test'
+                sh 'mvn package'
             }
-          }
-        stage('Integration Test') {
-            steps {
-                sh 'mvn clean install'
-            }
-          }
-        stage("publish to nexus") {
+        }
+        stage('publish to nexus') {
             steps {
                 script {
                     // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
