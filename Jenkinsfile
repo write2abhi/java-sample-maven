@@ -20,7 +20,12 @@ pipeline {
           }
         stage('Integration Test') {
             steps {
-                sh 'mvn clean verify'
+                sh 'mvn clean install'
+            }
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml' 
+                }
             }
           }
         }
