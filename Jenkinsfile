@@ -27,7 +27,7 @@ pipeline {
                 '''
             }
         }
-        stage("build & SonarQube analysis") {
+        stage('build & SonarQube analysis') {
             agent any
             steps {
               withSonarQubeEnv('sonarqube') {
@@ -35,13 +35,13 @@ pipeline {
               }
             }
           }
-        stage("Quality Gate") {
+        stage('Quality Gate') {
             steps {
               timeout(time: 1, unit: 'HOURS') {
                 waitForQualityGate abortPipeline: true
               }
             }
-             
+          }  
         stage('Unit Test') {
             steps {
                 sh 'mvn package'
@@ -90,5 +90,5 @@ pipeline {
             }
         }
     }
-  }
 }
+
