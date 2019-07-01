@@ -103,7 +103,6 @@ pipeline {
                     //        remote.user = username
                     //        remote.identityFile = key
                             sshCommand remote: remote, command: 'for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done'
-                        }
                     }
                 }
             }
