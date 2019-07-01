@@ -101,8 +101,9 @@ pipeline {
                         remote.password = 'password'
                     //    withCredentials([sshUserPrivateKey(credentialsId: 'ssh-local', keyFileVariable: 'key', passphraseVariable: '', usernameVariable: 'username')]) {
                     //        remote.user = username
-                    //        remote.identityFile = key
-                            sshCommand remote: remote, command: 'for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done'
+                    //        remote.identityFile = ke
+                            sshPut remote: remote, from: 'target/java-maven-junit-helloworld-2.0-SNAPSHOT.jar', into: '/home/abhishek/'
+                            sshScript remote: remote, script: "deploy.sh"
                     }
                 }
             }
