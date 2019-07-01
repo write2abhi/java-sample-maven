@@ -88,6 +88,23 @@ pipeline {
                     }
                 }
             }
+        },
+        stage('deploy') {
+            steps {
+                script {
+                    stage('ssh') {
+                        def remote = [:]
+                        remote.name = "abhishek-LP"
+                        remote.host = "172.20.10.13"
+                        remote.allowAnyHosts = true
+                        withCredentials([sshUserPrivateKey(credentialsId: 'ssh-local', keyFileVariable: 'key', passphraseVariable: '', usernameVariable: 'username')]) {
+                            remote.user = username
+                            remote.identityFile = key
+                            sshCommand remote: remote, command: 'for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done'
+                        }
+                    }
+                }
+            }
         }
     }
 }
