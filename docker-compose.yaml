@@ -35,7 +35,7 @@ services:
     networks:
       - sonarnet
     volumes:
-      - "nexus-data:/nexus-data"
+      - "nexus_data:/nexus-data"
     ports:
       - "8081:8081"
 
@@ -50,4 +50,4 @@ volumes:
   sonarqube_bundled-plugins:
   postgresql:
   postgresql_data:
-  nexus-data:
+  nexus_data:
