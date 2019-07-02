@@ -88,10 +88,12 @@ pipeline {
             steps {
                 script {
                     stage('ssh') {
+                        // update remote host details where you have to deploy the artifact
                         def remote = [:]
                         remote.name = "java-maven"
                         remote.host = "172.20.10.13"
                         remote.allowAnyHosts = true
+                        // Update credentialID you have created 
                         withCredentials([sshUserPrivateKey(credentialsId: 'ssh-local', keyFileVariable: 'key', passphraseVariable: '', usernameVariable: 'username')]) {
                             remote.user = username
                             remote.identityFile = key

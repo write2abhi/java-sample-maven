@@ -1,32 +1,3 @@
-# A Java/Maven/JUnit HelloWorld example
-
-A „Hello World!” sample written in Java using Maven for the build, that showcases a few very simple tests.
-
-This example demonstrates:
-
-* A simple Java 8 application with tests
-* Unit tests written with [JUnit 5](https://junit.org/junit5/)
-* Integration tests written with [JUnit 5](https://junit.org/junit5/)
-* Code coverage reports via [JaCoCo](https://www.jacoco.org/jacoco/)
-* A Maven build that puts it all together
-
-## Running the tests
-
-* To run the unit tests, call `mvn test`
-* To run the integration tests as well, call `mvn verify`
-* Code coverage reports are generated when `mvn verify` (or a full `mvn clean install`) is called.
-  Point a browser at the output in `target/site/jacoco-both/index.html` to see the report.
-
-## Conventions
-
-This example follows the following basic conventions:
-
-| | unit test | integration test |
-| --- | --- | --- |
-| **resides in:** | `src/test/java/*Test.java` | `src/test/java/*IT.java` |
-| **executes in Maven phase:** | test | verify |
-| **handled by Maven plugin:** | [surefire](http://maven.apache.org/surefire/maven-surefire-plugin/) | [failsafe](http://maven.apache.org/surefire/maven-failsafe-plugin/) |
-
 # Setup Automated CI/CD Pipeline
 
 ## Assumptions
@@ -46,4 +17,27 @@ This example follows the following basic conventions:
 ## Jenkins Configuration
 * Jenkins installation is pre-configured to skip initial wizard, creating first admin user and all the required plugin installations. So we don't need to perform manual steps for initial setup. 
 * Jenkins is accessible on 8080 port of your host machine IP. 
-* To build and test java code using maven we need to configure maven and java tools in `Global Tool configuration section`. 
+* To build and test java code using maven we need to configure maven and java tools in `Global Tool configuration section`.
+* Create credential in `Credentials section` to pull the code from private repo.
+* Create credential using SSH private key to remotely execute the shell command in deploy stage. 
+* CI/CD pipeline is defined in a Jenkinsfile in the project root folder. 
+
+## SonarQube Configuration
+* To configure sonarqube server first we need to login into the sonarqube and generate the security token. 
+* Also, we need to configure a webhook in sonarqube console for Quality Gate.
+* Once this is done, sonarqube server configuration is done in Jenkins under `SonarQube servers` section, where you need to provide details like Name, Server Url, and server authentication token etc.
+
+## Nexus Configuration
+* Nexus configuration is done is Jenkinsfile as a part of CI/CD pipeline. 
+* A hosted maven repository is created in Nexus to store the artifacts. 
+
+## Deploy
+* To deploy the artifacts on AWS SSH pipeline steps plugin is used. 
+* Once the build is pushed to the Nexus, we are pushing the Jar to remote EC2 machine and deploying the Jar using deploy.sh script. 
+* Replace the remote host details in Jenkinsfile before running the pipeline. 
+
+## Jenkinsfile
+* All the pipeline stages are defined in Jenkinsfile.
+* 
+
+
