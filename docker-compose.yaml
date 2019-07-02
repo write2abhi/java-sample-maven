@@ -1,6 +1,18 @@
 version: "2"
 
 services:
+  jenkins:
+    build: ./jenkins
+    ports:
+      - "8080:8080"
+    networks: 
+      - sonarnet
+    environment:
+      - JENKINS_USER=admin
+      - JENKINS_PASS=admin
+    volumes:
+      - jenkins_vol:/var/jenkins_home
+
   sonarqube:
     image: sonarqube
     expose:
@@ -51,3 +63,4 @@ volumes:
   postgresql:
   postgresql_data:
   nexus_data:
+  jenkins_vol:

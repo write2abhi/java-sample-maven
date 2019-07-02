@@ -27,7 +27,7 @@ pipeline {
                 '''
             }
         }
-        stage('build & SonarQube analysis') {
+        stage('Maven Build & SonarQube analysis') {
             agent any
             steps {
               withSonarQubeEnv('sonarqube') {
@@ -42,11 +42,6 @@ pipeline {
               }
             }
           }  
-        stage('Unit Test') {
-            steps {
-                sh 'mvn package'
-            }
-        }
         stage('publish to nexus') {
             steps {
                 script {
@@ -94,15 +89,13 @@ pipeline {
                 script {
                     stage('ssh') {
                         def remote = [:]
-                        remote.name = "abhishek-LP"
+                        remote.name = "java-maven"
                         remote.host = "172.20.10.13"
                         remote.allowAnyHosts = true
-                        remote.user = 'abhishek'
-                        remote.password = 'password'
-                    //    withCredentials([sshUserPrivateKey(credentialsId: 'ssh-local', keyFileVariable: 'key', passphraseVariable: '', usernameVariable: 'username')]) {
-                    //        remote.user = username
-                    //        remote.identityFile = ke
-                            sshPut remote: remote, from: 'target/java-maven-junit-helloworld-2.0-SNAPSHOT.jar', into: '/home/abhishek/'
+                        withCredentials([sshUserPrivateKey(credentialsId: 'ssh-local', keyFileVariable: 'key', passphraseVariable: '', usernameVariable: 'username')]) {
+                            remote.user = username
+                            remote.identityFile = key
+                            sshPut remote: remote, from: 'target/java-maven-junit-helloworld-2.0-SNAPSHOT.jar', into: '/home/ubuntu/'
                             sshScript remote: remote, script: "deploy.sh"
                     }
                 }
